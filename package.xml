@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>RicoNeitzel_VertNav</name>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
     <channel>community</channel>
@@ -11,8 +11,8 @@
     <notes>developed on 1.2.0.1, may work on older installations.</notes>
     <authors><author><name>Vinai Kopp</name><user>auto-converted</user><email>vinai@netzarbeiter.com</email></author></authors>
     <date>2009-01-12</date>
-    <time>21:29:54</time>
-    <contents><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="e93b4c93f38735631b56600ddf4498cf"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="35e4252c98bc865156d5ad10a63b8a94"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="9a4f260c406a632e0d62e00504d686e3"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="f679f861d74d366f8dbbc0567080afd0"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="c08bf6a61472485a10c194f4cda302d0"/></dir><dir name="etc"><file name="config.xml" hash="07ed20364462d748e55e5f04a203cacd"/></dir></dir></dir></target></contents>
+    <time>21:32:07</time>
+    <contents><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="e93b4c93f38735631b56600ddf4498cf"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="35e4252c98bc865156d5ad10a63b8a94"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="9a4f260c406a632e0d62e00504d686e3"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="f679f861d74d366f8dbbc0567080afd0"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="c08bf6a61472485a10c194f4cda302d0"/></dir><dir name="etc"><file name="config.xml" hash="0816dcf1f73df49a7a8c5f4a63929128"/></dir></dir></dir></target></contents>
     <compatible/>
     <dependencies/>
 </package>
