@@ -56,4 +56,11 @@
             <block type="vertnav/navigation" name="catalog.vertnav" template="vertnav/left.phtml" before="-" />
         </reference>
     </catalog_category_layered>
+    
+   <catalog_product_view>
+        <reference name="left">
+            <block type="vertnav/navigation" name="catalog.vertnav" template="vertnav/left.phtml" before="-" />
+        </reference>
+   </catalog_product_view>
+
 </layout>
