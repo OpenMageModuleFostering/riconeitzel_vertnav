@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/RicoNeitzel_VertNav",
+    "type": "magento-module",
+    "license": "OSL-v3.0",
+    "homepage": "",
+    "description": "Vertical Navigation - drop in replacement for the horizontal  top navigation.",
+    "authors": [
+    {
+        "name": "Vinai Kopp",
+        "email": "vinai@netzarbeiter.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
