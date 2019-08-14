@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>RicoNeitzel_VertNav</name>
-    <version>0.2.7</version>
+    <version>0.2.8</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
     <channel>community</channel>
@@ -10,9 +10,9 @@
     <description>Lots of css selectors available.</description>
     <notes>Add a vertical menu to your site. Features many css classes and several configuration options.</notes>
     <authors><author><name>Vinai Kopp</name><user>auto-converted</user><email>vinai@netzarbeiter.com</email></author></authors>
-    <date>2009-10-03</date>
-    <time>22:34:23</time>
-    <contents><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="48ed54348eefcc8e1e0286feb84cbe4e"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="956ada78dc7cd460a2e94a718e33dfa9"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="eeedbcdc4c757152ff888dfd9826f696"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="227d7980c24ebd629e1c1d4f10b8c62c"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="86514aad8b4bfc067b31a20831d7b8d0"/></dir><dir name="etc"><file name="config.xml" hash="1c1186b9d0e0d6c22fc02350c52c6711"/><file name="system.xml" hash="cc8fc5c78f35883252d1cebb67e6b807"/></dir><dir name="Helper"><file name="Data.php" hash="8e340ac22d50a4ac719477a16a16a3e1"/></dir><dir name="Model"><dir name="System"><dir name="Config"><dir name="Source"><file name="Root.php" hash="2726c3c36c68fb603b30cc930f13cbca"/></dir></dir></dir></dir></dir></dir></target></contents>
+    <date>2009-10-04</date>
+    <time>11:17:31</time>
+    <contents><target name="magelocale"><dir name="de_DE"><file name="RicoNeitzel_VertNav.csv" hash="15cc5ae7507240ed6effab17b07d8de9"/></dir></target><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="48ed54348eefcc8e1e0286feb84cbe4e"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="956ada78dc7cd460a2e94a718e33dfa9"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="eeedbcdc4c757152ff888dfd9826f696"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="227d7980c24ebd629e1c1d4f10b8c62c"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="86514aad8b4bfc067b31a20831d7b8d0"/></dir><dir name="etc"><file name="config.xml" hash="33827f3e4c91803b7dff999c4653bee7"/><file name="system.xml" hash="cc8fc5c78f35883252d1cebb67e6b807"/></dir><dir name="Helper"><file name="Data.php" hash="8e340ac22d50a4ac719477a16a16a3e1"/></dir><dir name="Model"><dir name="System"><dir name="Config"><dir name="Source"><file name="Root.php" hash="2726c3c36c68fb603b30cc930f13cbca"/></dir></dir></dir></dir></dir></dir></target></contents>
     <compatible/>
     <dependencies/>
 </package>
