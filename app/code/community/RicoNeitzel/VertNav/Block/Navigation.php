@@ -4,23 +4,18 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
+ * This source file is subject to the Open Software License (OSL 3.0).
+ * It is available through the world-wide-web at this URL:
  * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
  *
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
+ * versions in the future.
  *
  * @category   RicoNeitzel
  * @package    RicoNeitzel_VertNav
- * @copyright  Copyright (c) 2009 Vinai Kopp http://netzarbeiter.com/
+ * @copyright  Copyright (c) 2011 Vinai Kopp http://netzarbeiter.com/
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -41,13 +36,19 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 	 * Netzarbeiter_GroupsCatalog
 	 * Netzarbeiter_LoginCatalog
 	 *
+	 * Also add the current product and current cms page id if they exist if
+	 * this block has been added to a cms or product detail page.
+	 *
 	 * @return string
 	 */
     public function getCacheKey()
     {
-        $key = 'VERTNAV_' . parent::getCacheKey();
-        $key .= $this->_getCustomerGroupId();
-        return $key;
+        $key = parent::getCacheKey();
+        $customerGroupId = $this->_getCustomerGroupId();
+		$productId = Mage::registry('current_product') ? Mage::registry('current_product')->getId() : 0;
+		$cmsPageId = Mage::app()->getRequest()->getParam('page_id', Mage::getStoreConfig(Mage_Cms_Helper_Page::XML_PATH_HOME_PAGE));
+
+        return 'VERTNAV_' . $key . '_' . $customerGroupId . '_' . $productId . '_' . $cmsPageId;
     }
 
     /**
@@ -61,7 +62,7 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     }
 
     /**
-     * Check if the Netzarbeter_LoginCatalog extension is installed and active
+     * Check if the Netzarbeiter_LoginCatalog extension is installed and active
      *
      * @return boolean
      */
@@ -75,7 +76,7 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     }
 
     /**
-     * Check if the Netzarbeter_LoginCatalog extension is configured to hide categories from logged out customers
+     * Check if the Netzarbeiter_LoginCatalog extension is configured to hide categories from logged out customers
      *
      * @return boolean
      */
@@ -90,7 +91,7 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     }
 
     /**
-     * This method is only here to provide compatibility with the Netzarbeter_LoginCatalog extension
+     * This method is only here to provide compatibility with the Netzarbeiter_LoginCatalog extension
      *
      * @param Varien_Data_Tree_Node $category
      * @param int $level
@@ -115,11 +116,9 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     {
         $html = array();
 
-    	//if (! $category instanceof Varien_Data_Tree_Node) return '';
-
         if ($this->_checkLoginCatalog()) return '';
-		
         if (! $category->getIsActive()) return '';
+        if (! $category->getIncludeInMenu()) return '';
 
         if (! isset($levelClass)) $levelClass = array();
 		$combineClasses = array();
@@ -137,33 +136,31 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 
 		$levelClass = array_merge($levelClass, $combineClasses);
 
-        $levelClass[] = $this->_getClassNameFromCategoryName($category);
+		$levelClass[] =  $this->_getClassNameFromCategoryName($category);
 
-        $productCount = '';
-        if (Mage::getStoreConfig('catalog/vertnav/display_product_count'))
-        {
-        	$productCount = '<span class="product-count"> (' . $this->_getProductCount($category) . ')</span>';
-        }
+		$productCount = '';
+		if ($this->displayProductCount())
+		{
+			$n = Mage::getModel('catalog/layer')->setCurrentCategory($category->getID())->getProductCollection()->getSize();
+			$productCount = '<span class="product-count"> (' . $n . ')</span>';
+		}
 
         // indent HTML!
         $html[1] = str_pad ( "", (($level * 2 ) + 4), " " ).'<span class="vertnav-cat"><a href="'.$this->getCategoryUrl($category).'"><span>'.$this->htmlEscape($category->getName()).'</span></a>'.$productCount."</span>\n";
 
 		$autoMaxDepth = Mage::getStoreConfig('catalog/vertnav/expand_all_max_depth');
 		$autoExpand = Mage::getStoreConfig('catalog/vertnav/expand_all');
-		
+
         if (in_array($category->getId(), $this->getCurrentCategoryPath())
 			|| ($autoExpand && $autoMaxDepth == 0)
 			|| ($autoExpand && $autoMaxDepth > $level+1)
-		)
-        {
-        	if ($category instanceof Mage_Catalog_Model_Category)
-        	{
-            	$children = $this->toLinearArray($category->getChildrenCategories());
-        	}
-        	else
-        	{
-        		$children = $category->getChildren();
-        	}
+		) {
+			$children = $this->_getCategoryCollection()
+				->addIdFilter($category->getChildren());
+
+			$children = $this->toLinearArray($children);
+
+			//usort($children, array($this, '_sortCategoryArrayByName'));
 
             $hasChildren = $children && ($childrenCount = count($children));
             if ($hasChildren)
@@ -205,7 +202,7 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 
         // indent HTML!
         $html[3] = "\n".str_pad ( "", ($level * 2 ) + 2, " " ).'</li>'."\n";
-		
+
 		ksort($html);
         return implode('', $html);
     }
@@ -224,6 +221,25 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     	return $array;
     }
 
+	/**
+	 * Sorting Method
+	 *
+	 * @param Mage_Catalog_Model_Category $a
+	 * @param Mage_Catalog_Model_Category $b
+	 * @return int
+	 * @deprecated
+	 */
+	protected function _sortCategoryArrayByName($a, $b)
+	{
+		return strcoll($a->getName(), $b->getName());
+	}
+
+	/**
+	 * Convert the category name into a string that can be used as a css class
+	 *
+	 * @param Mage_Catalog_Model_Category $category
+	 * @return string
+	 */
     protected function _getClassNameFromCategoryName($category)
     {
     	$name = $category->getName();
@@ -247,34 +263,55 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 		return $customerGroupId;
 	}
 
+	/**
+	 * Check if the current category matches the passed in category
+	 *
+	 * @param Mage_Catalog_Model_Category $category
+	 * @return bool
+	 */
 	protected function _isCurrentCategory($category)
 	{
 		return ($cat = $this->getCurrentCategory()) && $cat->getId() == $category->getId();
 	}
 
+	/**
+	 * Return the number of products assigned to the category
+	 *
+	 * @param Mage_Catalog_Model_Category|Varien_Data_Tree_Node $category
+	 * @return int
+	 */
 	protected function _getProductCount($category)
 	{
-		$count = 0;
-		if ($category instanceof Mage_Catalog_Model_Category)
+		if (null === ($count = $category->getData('product_count')))
 		{
-			$count =  $category->getProductCount();
-		}
-		elseif ($category instanceof Varien_Data_Tree_Node)
-		{
-			$count = $this->_getProductCountFromTreeNode($category);
+			$count = 0;
+			if ($category instanceof Mage_Catalog_Model_Category)
+			{
+				$count =  $category->getProductCount();
+			}
+			elseif ($category instanceof Varien_Data_Tree_Node)
+			{
+				$count = $this->_getProductCountFromTreeNode($category);
+			}
 		}
 		return $count;
 	}
 
+	/**
+	 * Get the number of products from a category tree node
+	 *
+	 * @param Varien_Data_Tree_Node $category
+	 * @return int
+	 */
 	protected function _getProductCountFromTreeNode(Varien_Data_Tree_Node $category)
 	{
-		return Mage::getModel('catalog/category')->setId($category->getId())->getProductCount();
+		return Mage::getSingleton('catalog/category')->setId($category->getId())->getProductCount();
 	}
 
 	/**
 	 * Get catagories of current store, using the max depth setting for the vertical navigation
 	 *
-	 * @return Varien_Data_Tree_Node_Collection
+	 * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection
 	 */
 	public function getStoreCategories()
 	{
@@ -285,6 +322,19 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 
         /* @var $category Mage_Catalog_Model_Category */
 		$category = Mage::getModel('catalog/category');
+
+		/* Set Category Object if Product is requested without category path in URI (top level request). Takes first Category of a Product as Category Object*/
+
+		if( true == (bool) Mage::getStoreConfig( 'catalog/vertnav/show_cat_on_toplevel' ) &&
+			false == Mage::registry('current_category') &&
+			false != Mage::registry('current_product') ) {
+			$product_categories = Mage::registry( 'current_product' )->getCategoryIds();
+			if(count($product_categories) > 0) {
+				$new_active_category = Mage::getModel('catalog/category')->load($product_categories[0]);
+				Mage::register('current_category', $new_active_category);
+			}
+		}
+
 
 		$parent = false;
 		switch (Mage::getStoreConfig('catalog/vertnav/vertnav_root'))
@@ -319,6 +369,19 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 					$parent = $cat->getId();
 				}
 		}
+
+		/**
+		 * Thanks to thebod for this patch!
+		 * It enables the setting of the category ID to use via Layout XML:
+		 *
+		 * <reference name="catalog.vertnav">
+		 *	<action method="setCategoryId"><category_id>8</category_id></action>
+		 * </reference>
+		 */
+		if ($customId = $this->getCategoryId()) {
+			$parent = $customId;
+		}
+
 		if (! $parent && Mage::getStoreConfig('catalog/vertnav/fallback_to_root'))
 		{
 			$parent = Mage::app()->getStore()->getRootCategoryId();
@@ -331,15 +394,84 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
 		{
 			return array();
 		}
-		
-		$storeCategories = $category->getCollection()
-			->addIsActiveFilter()
-			->addAttributeToSelect('name')
-			->addFieldToFilter('parent_id', $parent)
-			->addAttributeToSort('position', 'ASC')
-		;
-		
+		$storeCategories = $this->_getCategoryCollection()
+			->addFieldToFilter('parent_id', $parent);
+
 		$this->_storeCategories = $storeCategories;
 		return $storeCategories;
+	}
+
+	/**
+	 * $childrenIdString is a comma seperated list of category IDs
+	 *
+	 * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection
+	 */
+	protected function _getCategoryCollection()
+	{
+		$collection = Mage::getResourceModel('catalog/category_collection');
+		/* @var $collection Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection */
+		$collection->addAttributeToSelect('url_key')
+			->addAttributeToSelect('name')
+			->addAttributeToSelect('all_children')
+			->addAttributeToFilter('is_active', 1)
+			->addAttributeToFilter('include_in_menu', 1)
+			->setOrder('position', 'ASC')
+			->joinUrlRewrite();
+
+		if ($this->displayProductCount())
+		{
+			$collection->setLoadProductCount(true);
+		}
+
+		return $collection;
+	}
+
+	/**
+	 *
+	 * @param Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection $collection
+	 * @return RicoNeitzel_VertNav_Block_Navigation
+	 * @deprecated Now the count is added directly in _getCategoryChildren()
+	 * @see _getCategoryChildren()
+	 */
+	protected function _addProductCount($collection)
+	{
+		if ($collection instanceof Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection)
+		{
+			if ($collection->isLoaded())
+			{
+				$collection->loadProductCount($collection->getItems());
+			}
+			else
+			{
+				$collection->setLoadProductCount(true);
+			}
+		}
+		else
+		{
+			$this->_getProductCollectionResource()->addCountToCategories($collection);
+		}
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
+	 */
+	protected function _getProductCollectionResource()
+	{
+		if (null === $this->_productCollection)
+		{
+			$this->_productCollection = Mage::getResourceModel('catalog/product_collection');
+		}
+		return $this->_productCollection;
+	}
+
+	/**
+	 *
+	 * @return bool
+	 */
+	public function displayProductCount()
+	{
+		return Mage::getStoreConfigFlag('catalog/vertnav/display_product_count');
 	}
 }
