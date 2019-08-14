@@ -50,6 +50,59 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     }
     
     /**
+     * check if we should hide the categories because of Netzarbeiter_LoginCatalog
+     *
+     * @return boolean
+     */
+    protected function _checkLoginCatalog()
+    {
+    	return $this->_isLoginCatalogInstalledAndActive() && $this->_loginCatalogHideCategories();
+    }
+    
+    /**
+     * Check if the Netzarbeter_LoginCatalog extension is installed and active
+     *
+     * @return boolean
+     */
+    protected function _isLoginCatalogInstalledAndActive()
+    {
+    	if ($node = Mage::getConfig()->getNode('modules/Netzarbeiter_LoginCatalog'))
+    	{
+    		return strval($node->active) == 'true';
+    	}
+    	return false;
+    }
+    
+    /**
+     * Check if the Netzarbeter_LoginCatalog extension is configured to hide categories from logged out customers
+     *
+     * @return boolean
+     */
+    protected function _loginCatalogHideCategories()
+    {
+    	if (! Mage::getSingleton('customer/session')->isLoggedIn()
+			&& Mage::helper('logincatalog')->moduleActive()
+			&& Mage::helper('logincatalog')->getConfig('hide_categories')) {
+				return true;
+		}
+		return false;
+    }
+    
+    /**
+     * This method is only here to provide compatibility with the Netzarbeter_LoginCatalog extension
+     *
+     * @param Varien_Data_Tree_Node $category
+     * @param int $level
+     * @param bool $last
+     * @return string
+     */
+    public function drawItem($category, $level=0, $last=false)
+    {
+        if ($this->_checkLoginCatalog()) return '';
+        return parent::drawItem($category, $level, $last);
+    }
+    
+    /**
      * Add project specific formatting
      *
      * @param Varien_Data_Tree_Node $category
@@ -60,7 +113,10 @@ class RicoNeitzel_VertNav_Block_Navigation extends Mage_Catalog_Block_Navigation
     public function drawOpenCategoryItem(Varien_Data_Tree_Node $category, $level=0, array $class=null)
     {
         $html = '';
-        if (!$category->getIsActive())return $html;
+        
+        if ($this->_checkLoginCatalog()) return $html;
+        
+        if (!$category->getIsActive()) return $html;
         
         if (! isset($class)) $class = array();
         
