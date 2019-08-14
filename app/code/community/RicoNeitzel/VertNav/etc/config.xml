@@ -2,12 +2,7 @@
 <config>
     <modules>
         <RicoNeitzel_VertNav>
-            <version>0.1.6</version>
-			<depends>
-				<Mage_Core />
-				<Mage_Page />
-				<Mage_Catalog />
-			</depends>
+            <version>0.2.1</version>
         </RicoNeitzel_VertNav>
     </modules>
 
@@ -27,5 +22,23 @@
             </updates>
         </layout>
     </frontend>
+    <adminhtml>
+    	<translate>
+    		<modules>
+    			<RicoNeitzel_VertNav>
+    				<files>
+    					<default>RicoNeitzel_VertNav.csv</default>
+    				</files>
+    			</RicoNeitzel_VertNav>
+    		</modules>
+    	</translate>
+    </adminhtml>
+    <default>
+    	<catalog>
+    		<vertnav>
+    			<display_product_count>0</display_product_count>
+    		</vertnav>
+    	</catalog>
+    </default>
 </config>
 

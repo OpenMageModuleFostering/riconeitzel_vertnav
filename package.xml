@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <package>
     <name>RicoNeitzel_VertNav</name>
-    <version>0.1.6</version>
+    <version>0.2.1</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
     <channel>community</channel>
     <extends/>
     <summary>Vertical Navigation - drop in replacement for the horizontal  top navigation.</summary>
     <description>Lots of css selectors available.</description>
-    <notes>developed on 1.2.0.1, may work on older installations.</notes>
+    <notes>Developed on Magento 1.3, may work on older installations.</notes>
     <authors><author><name>Vinai Kopp</name><user>auto-converted</user><email>vinai@netzarbeiter.com</email></author></authors>
-    <date>2009-01-13</date>
-    <time>14:19:50</time>
-    <contents><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="e93b4c93f38735631b56600ddf4498cf"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="153ed32bd68928668aa2c12c5e9a349d"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="9a4f260c406a632e0d62e00504d686e3"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="f679f861d74d366f8dbbc0567080afd0"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="8038db9b488d18f389d72da52858e695"/></dir><dir name="etc"><file name="config.xml" hash="93c8aaa313c159e355e0d05b1a910809"/></dir></dir></dir></target></contents>
+    <date>2009-09-23</date>
+    <time>10:39:53</time>
+    <contents><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><file name="vertnav.css" hash="48ed54348eefcc8e1e0286feb84cbe4e"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><file name="vertnav.xml" hash="5835e51670d7bc57d61cfaa486a67c84"/></dir><dir name="template"><dir name="vertnav"><file name="left.phtml" hash="9a4f260c406a632e0d62e00504d686e3"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="RicoNeitzel_VertNav.xml" hash="227d7980c24ebd629e1c1d4f10b8c62c"/></dir></target><target name="magecommunity"><dir name="RicoNeitzel"><dir name="VertNav"><dir name="Block"><file name="Navigation.php" hash="4bc6aae81c47840a0b585f231221b0aa"/></dir><dir name="etc"><file name="config.xml" hash="11d5b8ed2190055f55c3b3b3acd305bc"/><file name="system.xml" hash="fd5ddd20eb6edcbb5f7d77c1701598ef"/></dir></dir></dir></target></contents>
     <compatible/>
     <dependencies/>
 </package>
