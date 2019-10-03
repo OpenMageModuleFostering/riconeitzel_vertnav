@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/RicoNeitzel_VertNav",
+    "name": "openmage-module-fostering\/riconeitzel_vertnav",
     "type": "magento-module",
-    "license": "OSL-v3.0",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Vertical Navigation - drop in replacement for the horizontal  top navigation.",
     "authors": [
